@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: jokergamble
+    runtime: node
+    plan: starter            # a persistent disk needs a paid plan; on free, saved data resets on each deploy
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    disk:
+      name: jokergamble-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: ADMIN_ID
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false           # set this in the Render dashboard

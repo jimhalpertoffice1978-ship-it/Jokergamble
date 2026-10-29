@@ -1,0 +1,14 @@
+{
+  "name": "jokergamble",
+  "version": "2.0.0",
+  "description": "JokerGamble - a play-token Las Vegas casino with pluggable games. No real money, ever.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
