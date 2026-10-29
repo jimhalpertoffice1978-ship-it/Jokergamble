@@ -1,0 +1,51 @@
+/* Lucky Draw */
+.lt { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .lt { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); align-items: start; } }
+.lt-machine { padding: 22px 18px; display: grid; gap: 16px; justify-items: center; text-align: center; }
+.lt-jackpot { display: grid; gap: 2px; padding: 10px 28px; border-radius: 20px; background: rgba(10, 2, 20, 0.6); box-shadow: 0 0 0 2px var(--gold-d), 0 0 30px rgba(246, 199, 68, 0.35); }
+.lt-jackpot span { font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold-l); }
+.lt-jackpot-amt { font-family: var(--font-sign); font-size: clamp(2rem, 7vw, 3.2rem); color: var(--gold-l); text-shadow: 0 0 22px rgba(246, 199, 68, 0.7); line-height: 1.1; }
+.lt-balls { display: flex; gap: clamp(6px, 2vw, 14px); justify-content: center; }
+.lt-ball { width: clamp(46px, 11vw, 68px); height: clamp(46px, 11vw, 68px); border-radius: 50%; display: grid; place-items: center; font-family: var(--font-sign); font-size: clamp(1.3rem, 4vw, 1.9rem); color: #2a0e4d; background: radial-gradient(circle at 35% 30%, #fff, #f6c744 55%, #b87a14); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5), inset 0 -5px 8px rgba(0, 0, 0, 0.25); }
+.lt-ball.empty { background: rgba(0, 0, 0, 0.35); color: rgba(255, 233, 160, 0.4); box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6); }
+.lt-ball.pop { animation: popIn 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.lt-status { min-height: 2.6em; display: grid; gap: 2px; }
+.lt-status b { font-family: var(--font-sign); font-size: 1.5rem; font-weight: 400; color: var(--gold-l); }
+.lt-status span { opacity: 0.9; font-weight: 700; }
+.lt-status.win b { text-shadow: 0 0 20px var(--gold); }
+.lt-timer { font-size: 0.85rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--gold-l); min-height: 1.3em; }
+.lt-timer.urgent { color: #ffb3ba; animation: flicker 0.5s ease-in-out infinite alternate; }
+.lt-prizes { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.lt-pz { display: grid; padding: 6px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); font-size: 0.8rem; }
+.lt-pz b { font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+.lt-pz span { color: var(--gold-l); font-weight: 700; }
+.lt-hist, .lt-crowd { display: grid; gap: 6px; margin-top: 14px; padding: 10px 14px; border-radius: 16px; background: rgba(0, 0, 0, 0.25); }
+.lt-crowd:empty { display: none; }
+.lt-hist b, .lt-crowd b, .lt-hint { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-l); }
+.lt-h { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.85rem; }
+.lt-h em { font-style: normal; opacity: 0.6; min-width: 3.5ch; }
+.lt-h i { font-style: normal; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #f6c744; color: #2a0e4d; font-weight: 700; font-size: 0.78rem; }
+.lt-h.jp strong { color: var(--gold-l); }
+.lt-pl { display: flex; justify-content: space-between; gap: 12px; font-size: 0.92rem; }
+.lt-pl .up { color: var(--gold-l); font-weight: 700; }
+.lt-pl .down { color: #ffb3ba; font-weight: 700; }
+.lt-right { display: grid; gap: 18px; }
+.lt-picker, .lt-mine { display: grid; gap: 12px; padding: 16px; border-radius: 22px; background: rgba(0, 0, 0, 0.28); border: 1px solid rgba(255, 233, 160, 0.18); }
+.lt-picker.closed .lt-board { opacity: 0.55; }
+.lt-board { display: grid; grid-template-columns: repeat(6, 1fr); gap: clamp(5px, 1.5vw, 9px); }
+.lt-num { aspect-ratio: 1; border-radius: 50%; border: 2px solid rgba(246, 199, 68, 0.5); background: rgba(0, 0, 0, 0.35); color: var(--ivory); font-weight: 700; font-size: clamp(0.9rem, 3vw, 1.15rem); cursor: pointer; transition: transform 0.12s, background 0.15s; }
+.lt-num:hover:not(:disabled) { transform: scale(1.08); }
+.lt-num.sel { background: radial-gradient(circle at 35% 30%, #fff6cf, #f6c744 60%, #b87a14); color: #2a0e4d; border-color: #fff6cf; box-shadow: 0 0 14px rgba(246, 199, 68, 0.7); }
+.lt-num.drawn { outline: 3px solid #3dff8a; outline-offset: 1px; }
+.lt-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.lt-slip { display: grid; gap: 8px; max-height: 340px; overflow: auto; }
+.lt-empty { opacity: 0.65; padding: 8px 2px; }
+.lt-ticket { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 14px; background: #f8f0da; color: #2a0e4d; }
+.lt-ticket.won { box-shadow: 0 0 0 3px #f6c744, 0 0 18px rgba(246, 199, 68, 0.7); }
+.lt-tn { font-weight: 700; opacity: 0.5; min-width: 1.4ch; }
+.lt-nums { display: flex; flex-wrap: wrap; gap: 5px; flex: 1; }
+.lt-nums i { font-style: normal; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(42, 14, 77, 0.1); font-weight: 700; font-size: 0.9rem; }
+.lt-nums i.hit { background: #1f8f55; color: #fff; }
+.lt-x { border: 0; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; color: #a8142a; padding: 0 6px; }
+.lt-prize { font-weight: 700; min-width: 5ch; text-align: right; }
+.lt-total { font-weight: 700; color: var(--gold-l); min-height: 1.2em; }
