@@ -327,8 +327,6 @@ const PHASE = {
   betting: 'Betting open',
   playing: 'Cards in play',
   spinning: 'Wheel spinning',
-  selling: 'Tickets on sale',
-  drawing: 'Drawing now',
   result: 'Paying out',
 };
 
@@ -364,8 +362,7 @@ function lobby() {
       const left = secsLeft(t.deadline);
       el.pop.textContent = t.online ? `${t.online} watching` : 'Empty table';
       const base = PHASE[t.phase] || '';
-      const jp = t.jackpot ? ` · Jackpot ${fmt(t.jackpot)}` : '';
-      el.line.textContent = (t.seated ? `${base}${left != null ? ` · ${left}s` : ''} · ${t.seated} playing` : t.phase === 'betting' || t.phase === 'selling' ? 'Waiting for the first bet' : base) + jp;
+      el.line.textContent = t.seated ? `${base}${left != null ? ` · ${left}s` : ''} · ${t.seated} playing` : t.phase === 'betting' ? 'Waiting for the first bet' : base;
     }
   };
   liveLobby();
