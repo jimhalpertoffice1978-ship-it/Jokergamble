@@ -274,6 +274,7 @@ export default {
 
       const first = !prev;
       const dur = render(!first);
+      felt.classList.toggle('idle', nv.phase === 'betting' && nv.seats.length === 0);
       paintControls();
       timerPaint();
       if (nv.phase === 'result') {

@@ -461,3 +461,11 @@ body.in-game .lt-nums i { width: 26px; height: 26px; font-size: 0.8rem; }
 .bj-seats:empty::before { content: 'Tap a chip to take a seat'; align-self: center; font-family: var(--font-sign); font-size: 1.4rem; color: rgba(255, 233, 160, 0.45); letter-spacing: 0.06em; }
 .bj-seat .bj-hand { padding-top: 24px; }
 .bj-seat .bj-res { top: 2px; font-size: 0.85rem; padding: 2px 12px; }
+
+/* blackjack controls: always one full-width row, never a shrink-wrapped column */
+.bj-controls { width: min(720px, 100%); grid-template-columns: minmax(0, 1fr); }
+.bj-actions { grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); }
+.bj-actions .btn { padding-inline: 0.4em; min-width: 0; }
+.bj-print { opacity: 0; }
+.bj-felt.idle .bj-print { opacity: 1; }
+body.in-game .bj-felt.has-banner .bj-print { opacity: 0; }
