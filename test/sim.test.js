@@ -201,3 +201,61 @@ test('battleship: resign concedes, idle turn auto-fires, seat times out with a r
   assert.equal(app.accounts.get(winner).balance >= 1000 + STAKE, true);
   app.close();
 });
+
+test('blackjack duel: hidden hole card, turns, bust, closest wins, push, resign, refund', async () => {
+  const { STAKE } = await import('../src/games/duel.js');
+  let t = 20_000_000;
+  const now = () => t;
+  let seed = 11;
+  const rng = (n) => ((seed = (seed * 1664525 + 1013904223) >>> 0) % n);
+  const app = await createApp({ db: new Database({ now }), autoTick: false, now, rng, adminId: 'boss', adminPassword: 'Sup3rSecret!' });
+  for (const id of ['ann', 'ben', 'cal']) await app.accounts.create({ id, password: 'secret1', balance: 1000 });
+  const { rooms } = app;
+  const act = (id, a) => rooms.act(id, 'duel', a);
+  const st = () => rooms.state('duel');
+  let total = 3000;
+  for (let match = 0; match < 40; match++) {
+    if (st().phase === 'waiting') {
+      assert.ok(act('ann', { type: 'sit' }).ok);
+      if (match === 0) assert.equal(act('ann', { type: 'hit' }).ok, false, 'no hand yet');
+      assert.ok(act('ben', { type: 'sit' }).ok);
+    }
+    assert.equal(st().phase, 'playing');
+    if (match === 0) {
+      const spec = rooms.snapshot('cal', 'duel').view.hands;
+      assert.ok(spec.every((h) => h.cards[0] === null && h.total === null), 'spectators and rivals never see the hole card');
+      const mine = rooms.snapshot('ann', 'duel').view.hands.find((h) => h.id === 'ann');
+      assert.ok(mine.cards.every(Boolean) && mine.total > 0, 'you see your own hand');
+    }
+    let guard = 0;
+    while (st().phase === 'playing' && guard++ < 40) {
+      const me = st().turn;
+      assert.equal(act(me === 'ann' ? 'ben' : 'ann', { type: 'stand' }).ok, false, 'only the player to act can act');
+      const cards = st().hands[me];
+      act(me, { type: cards.length < 3 && rng(2) ? 'hit' : 'stand' });
+    }
+    assert.equal(st().phase, 'result');
+    const v = rooms.snapshot('cal', 'duel').view;
+    assert.ok(v.hands.every((h) => h.cards.every(Boolean)), 'everything is revealed at the end');
+    const sum = app.accounts.get('ann').balance + app.accounts.get('ben').balance;
+    assert.ok(sum >= 2000 && sum <= 2000 + 400, `tokens are conserved apart from small level rewards (${sum})`);
+    t += 8_000;
+    rooms.tick();
+    assert.equal(st().phase, 'waiting');
+    // top both up so long runs never starve
+    for (const id of ['ann', 'ben']) app.accounts.get(id).balance = 1000;
+  }
+  // resign concedes the pot
+  act('ann', { type: 'sit' });
+  act('ben', { type: 'sit' });
+  const who = st().turn;
+  assert.ok(act(who, { type: 'resign' }).ok);
+  assert.equal(st().outcome.winner, who === 'ann' ? 'ben' : 'ann');
+  t += 8_000; rooms.tick();
+  // idle seat is refunded
+  act('cal', { type: 'sit' });
+  assert.equal(app.accounts.get('cal').balance, 1000 - STAKE);
+  t += 120_000; rooms.tick();
+  assert.equal(app.accounts.get('cal').balance, 1000);
+  app.close();
+});

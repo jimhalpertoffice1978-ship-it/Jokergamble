@@ -336,7 +336,10 @@ footer b { color: var(--gold-l); }
 body.in-game { --room: calc(100dvh - var(--hdr, 96px) - 46px); }
 body.in-game footer { display: none; }
 body.in-game .bulbs { height: 9px; }
-body.in-game .top-in { padding: 6px 16px; gap: 8px 12px; }
+body.in-game .top-in { padding: 6px 16px; gap: 8px 12px; flex-wrap: nowrap; }
+body.in-game .who { flex: 0 1 auto; min-width: 0; max-width: 14ch; }
+body.in-game .rank { flex: 0 1 auto; min-width: 0; }
+body.in-game .lv-bar { max-width: 90px; }
 body.in-game .brand svg { width: 30px; height: 30px; }
 body.in-game .wrap { padding: 0 12px; }
 body.in-game .crumbs { margin: 4px 0 6px; gap: 10px; min-height: 34px; }
@@ -350,6 +353,7 @@ body.in-game .tray { flex-wrap: nowrap; }
 @media (max-width: 640px) {
   body.in-game .rank, body.in-game .daily, body.in-game .who { display: none; }
   body.in-game .top-in { flex-wrap: nowrap; }
+  body.in-game .bj-print { display: none; }
   body.in-game .bal { padding: 3px 10px; }
   body.in-game .crumbs .crowd { font-size: 0.68rem; }
   body.in-game .tray-chip .chip { --s: 34px; }
@@ -395,7 +399,9 @@ body.in-game .chip.mini { --s: 24px; font-size: 8px; }
 
 /* Blackjack */
 body.in-game .game-blackjack { display: flex; flex-direction: column; gap: 8px; }
-body.in-game .bj-felt { --cw: clamp(40px, min(9vw, calc(var(--room) * 0.1)), 80px); flex: 1 1 auto; min-height: 0; overflow: auto; padding: 10px 12px 14px; }
+body.in-game .bj-felt { --cw: clamp(40px, min(9vw, calc(var(--room) * 0.1)), 80px); flex: 1 1 auto; min-height: 0; overflow: visible; padding: 10px 12px 14px; grid-template-rows: auto auto minmax(0, 1fr); }
+body.in-game .bj-seats { overflow-y: auto; overflow-x: hidden; min-height: 0; max-height: 100%; align-content: center; scrollbar-width: none; }
+body.in-game .bj-seats::-webkit-scrollbar { display: none; }
 body.in-game .bj-seat { --cw: clamp(34px, min(6vw, calc(var(--room) * 0.075)), 56px); }
 body.in-game .bj-seat.mine { --cw: clamp(42px, min(8vw, calc(var(--room) * 0.1)), 76px); }
 body.in-game .bj-controls { margin: 0 auto; gap: 8px; flex: none; }
@@ -408,7 +414,7 @@ body.in-game .bj-spot { width: 62px; height: 62px; }
 body.in-game .bj-spot .stack { width: 34px; height: 34px; }
 body.in-game .bj-spotamt { font-size: 1.15rem; min-height: 1em; }
 body.in-game .bj-actions .btn { min-height: 50px; padding-block: 0.35em; }
-body.in-game .bj-print { display: none; }
+body.in-game .bj-print { display: block; top: auto; bottom: 12px; transform: translateX(-50%); }
 @media (max-width: 640px) {
   body.in-game .bj-bet-panel { grid-template-columns: 1fr; grid-template-areas: "spot" "tray" "adj" "deal"; }
   body.in-game .bj-spotwrap { grid-auto-flow: column; align-items: center; gap: 10px; }
@@ -448,3 +454,10 @@ body.in-game .lt-nums i { width: 26px; height: 26px; font-size: 0.8rem; }
   body.in-game .lt-status b { font-size: 1rem; }
   body.in-game .lt-actions .btn { padding: 0.5em 0.8em; font-size: 0.78rem; }
 }
+
+/* empty dealer slots so a quiet table does not look broken */
+.pc.ghost { background: transparent; border: 2px dashed rgba(255, 233, 160, 0.28); box-shadow: none; }
+.pc.ghost + .pc.ghost { margin-left: 12px !important; }
+.bj-seats:empty::before { content: 'Tap a chip to take a seat'; align-self: center; font-family: var(--font-sign); font-size: 1.4rem; color: rgba(255, 233, 160, 0.45); letter-spacing: 0.06em; }
+.bj-seat .bj-hand { padding-top: 24px; }
+.bj-seat .bj-res { top: 2px; font-size: 0.85rem; padding: 2px 12px; }

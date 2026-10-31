@@ -198,6 +198,7 @@ export default {
       );
 
       dealerCards.replaceChildren(
+        ...(view.dealer.length ? [] : [h('div', { class: 'pc ghost' }), h('div', { class: 'pc ghost' })]),
         ...view.dealer.map((c, i) => {
           if (startNew) return cardEl(c, { enter: true, delay: 0.22 + i * 0.44 });
           if (instantEnd) return cardEl(c, i === 1 ? { reveal: true, delay: 0.8 } : { enter: true, delay: 0.22 });
