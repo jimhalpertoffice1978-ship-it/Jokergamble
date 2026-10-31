@@ -38,6 +38,10 @@ async function boot() {
   app.startBal = app.profile?.balance ?? 0;
   buildShell();
   window.addEventListener('hashchange', route);
+  const hdr = document.querySelector('header.top');
+  const setHdr = () => document.body.style.setProperty('--hdr', `${hdr.offsetHeight}px`);
+  new ResizeObserver(setHdr).observe(hdr);
+  setHdr();
   if (app.role === 'player') {
     onProfile(updateHeader);
     updateHeader(app.profile);
@@ -256,6 +260,7 @@ async function route() {
     cleanup = null;
   }
   window.scrollTo(0, 0);
+  document.body.classList.toggle('in-game', app.role === 'player' && /^#\/g\//.test(location.hash));
   if (app.role === 'admin') {
     stage.replaceChildren(h('div', { class: 'loading' }, 'Opening the host console...'));
     const mod = await import('./admin.js');
@@ -327,6 +332,8 @@ const PHASE = {
   betting: 'Betting open',
   playing: 'Cards in play',
   spinning: 'Wheel spinning',
+  selling: 'Tickets on sale',
+  drawing: 'Drawing now',
   result: 'Paying out',
 };
 
@@ -362,7 +369,8 @@ function lobby() {
       const left = secsLeft(t.deadline);
       el.pop.textContent = t.online ? `${t.online} watching` : 'Empty table';
       const base = PHASE[t.phase] || '';
-      el.line.textContent = t.seated ? `${base}${left != null ? ` · ${left}s` : ''} · ${t.seated} playing` : t.phase === 'betting' ? 'Waiting for the first bet' : base;
+      const jp = t.jackpot ? ` · Jackpot ${fmt(t.jackpot)}` : '';
+      el.line.textContent = (t.seated ? `${base}${left != null ? ` · ${left}s` : ''} · ${t.seated} playing` : t.phase === 'betting' || t.phase === 'selling' ? 'Waiting for the first bet' : base) + jp;
     }
   };
   liveLobby();

@@ -331,3 +331,120 @@ footer b { color: var(--gold-l); }
 .ad-audit li { display: flex; gap: 12px; }
 .ad-audit time { opacity: 0.55; min-width: 8ch; }
 .empty { opacity: 0.7; padding: 14px; }
+
+/* ================= fit-to-screen game pages (body.in-game) ================= */
+body.in-game { --room: calc(100dvh - var(--hdr, 96px) - 46px); }
+body.in-game footer { display: none; }
+body.in-game .bulbs { height: 9px; }
+body.in-game .top-in { padding: 6px 16px; gap: 8px 12px; }
+body.in-game .brand svg { width: 30px; height: 30px; }
+body.in-game .wrap { padding: 0 12px; }
+body.in-game .crumbs { margin: 4px 0 6px; gap: 10px; min-height: 34px; }
+body.in-game .crumbs h1 { font-size: 1.5rem; }
+body.in-game .game { height: var(--room); min-height: 0; }
+body.in-game .felt { margin: 0; padding: 12px; border-radius: 24px; }
+body.in-game .bj-hint, body.in-game .lt-hint-long { display: none; }
+body.in-game .tray-chip { padding: 2px; }
+body.in-game .tray-chip .chip { --s: 40px; }
+body.in-game .tray { flex-wrap: nowrap; }
+@media (max-width: 640px) {
+  body.in-game .rank, body.in-game .daily, body.in-game .who { display: none; }
+  body.in-game .top-in { flex-wrap: nowrap; }
+  body.in-game .bal { padding: 3px 10px; }
+  body.in-game .crumbs .crowd { font-size: 0.68rem; }
+  body.in-game .tray-chip .chip { --s: 34px; }
+  body.in-game .brand-text { display: none; }
+  body.in-game .rl-total { display: none; }
+  body.in-game .rl-felt { padding: 6px; }
+  body.in-game .rl-adjust .btn { padding: 0.4em 0.8em; }
+}
+
+/* Roulette: every row of the table must fit, so the row height is derived from the free height.
+   On desktop the controls sit under the wheel so the table can use the whole height. */
+body.in-game .rl { --ch: clamp(20px, calc((var(--room) - 56px) / 14.2), 48px); height: 100%; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 8px 22px; align-items: start; }
+body.in-game .rl-left { position: static; align-content: start; gap: 6px; grid-column: 1; grid-row: 1; }
+body.in-game .rl-right { display: contents; }
+body.in-game .rl-felt { --ch: inherit; grid-column: 2; grid-row: 1 / span 2; padding: 8px 10px; margin: 0; align-self: start; }
+body.in-game .rl-controls { grid-column: 1; grid-row: 2; align-self: end; margin: 0; gap: 6px; width: 100%; max-width: none; }
+body.in-game .rl-wheelbox { width: min(100%, 300px, calc(var(--room) * 0.36)); }
+body.in-game .rl-status { min-height: 2.4em; }
+body.in-game .rl-status b { font-size: 1.3rem; }
+body.in-game .rl-hot, body.in-game .rl-crowd { display: none; }
+body.in-game .rl-hist { max-height: 30px; overflow: hidden; }
+body.in-game .rl-total { font-size: 1.1rem; }
+body.in-game .rl-spin { padding-block: 0.45em; min-height: 44px; }
+body.in-game .rt { max-width: 560px; }
+body.in-game .rc { font-size: clamp(0.8rem, calc(var(--ch) * 0.34), 1.1rem); }
+body.in-game .rc.out { font-size: clamp(0.55rem, calc(var(--ch) * 0.26), 0.8rem); letter-spacing: 0.04em; }
+body.in-game .chip.mini { --s: 24px; font-size: 8px; }
+@media (max-width: 900px) {
+  body.in-game .rl { --ch: clamp(20px, calc((var(--room) - 290px) / 14.2), 40px); grid-template-columns: minmax(0, 1fr); gap: 6px; grid-template-rows: auto auto auto; align-content: start; }
+  body.in-game .rl-left, body.in-game .rl-felt, body.in-game .rl-controls { grid-column: 1; grid-row: auto; }
+  body.in-game .rl-felt { align-self: stretch; }
+  body.in-game .rl-controls { align-self: start; margin: 4px auto 0; max-width: 520px; }
+  body.in-game .rl-left { grid-template-columns: 96px minmax(0, 1fr); justify-items: start; align-items: center; gap: 4px 12px; }
+  body.in-game .rl-wheelbox { width: 96px; grid-row: span 3; }
+  body.in-game .rl-status { text-align: left; min-height: 0; }
+  body.in-game .rl-status b { font-size: 1.1rem; }
+  body.in-game .rl-hist { justify-content: flex-start; max-width: none; }
+  body.in-game .hp { min-width: 24px; height: 24px; font-size: 0.7rem; }
+  body.in-game .rl-crowd, body.in-game .rl-timer { display: none; }
+  body.in-game .rl-timer { display: block; }
+  body.in-game .rt { max-width: none; }
+}
+
+/* Blackjack */
+body.in-game .game-blackjack { display: flex; flex-direction: column; gap: 8px; }
+body.in-game .bj-felt { --cw: clamp(40px, min(9vw, calc(var(--room) * 0.1)), 80px); flex: 1 1 auto; min-height: 0; overflow: auto; padding: 10px 12px 14px; }
+body.in-game .bj-seat { --cw: clamp(34px, min(6vw, calc(var(--room) * 0.075)), 56px); }
+body.in-game .bj-seat.mine { --cw: clamp(42px, min(8vw, calc(var(--room) * 0.1)), 76px); }
+body.in-game .bj-controls { margin: 0 auto; gap: 8px; flex: none; }
+body.in-game .bj-bet-panel { gap: 6px; grid-template-columns: auto 1fr; grid-template-areas: "spot tray" "spot adj" "deal deal"; align-items: center; justify-items: center; column-gap: 14px; }
+body.in-game .bj-spotwrap { grid-area: spot; gap: 2px; }
+body.in-game .bj-bet-panel .tray { grid-area: tray; }
+body.in-game .bj-adjust { grid-area: adj; gap: 6px; }
+body.in-game .bj-deal { grid-area: deal; padding-block: 0.4em; min-height: 46px; }
+body.in-game .bj-spot { width: 62px; height: 62px; }
+body.in-game .bj-spot .stack { width: 34px; height: 34px; }
+body.in-game .bj-spotamt { font-size: 1.15rem; min-height: 1em; }
+body.in-game .bj-actions .btn { min-height: 50px; padding-block: 0.35em; }
+body.in-game .bj-print { display: none; }
+@media (max-width: 640px) {
+  body.in-game .bj-bet-panel { grid-template-columns: 1fr; grid-template-areas: "spot" "tray" "adj" "deal"; }
+  body.in-game .bj-spotwrap { grid-auto-flow: column; align-items: center; gap: 10px; }
+  body.in-game .bj-spot { width: 46px; height: 46px; }
+}
+
+/* Lucky Draw */
+body.in-game .lt { height: 100%; align-items: stretch; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 16px; }
+body.in-game .lt-left { display: grid; align-content: start; gap: 8px; min-height: 0; overflow: auto; }
+body.in-game .lt-machine { padding: 14px 12px; gap: 10px; }
+body.in-game .lt-jackpot { padding: 6px 22px; }
+body.in-game .lt-jackpot-amt { font-size: clamp(1.7rem, 4vw, 2.5rem); }
+body.in-game .lt-ball { width: clamp(40px, min(8vw, calc(var(--room) * 0.1)), 62px); height: clamp(40px, min(8vw, calc(var(--room) * 0.1)), 62px); font-size: 1.4rem; }
+body.in-game .lt-status { min-height: 2.2em; }
+body.in-game .lt-status b { font-size: 1.25rem; }
+body.in-game .lt-pz { padding: 4px 9px; }
+body.in-game .lt-hist, body.in-game .lt-crowd { margin-top: 0; padding: 8px 12px; }
+body.in-game .lt-right { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+body.in-game .lt-picker, body.in-game .lt-mine { padding: 10px 12px; gap: 8px; }
+body.in-game .lt-picker { flex: none; }
+body.in-game .lt-mine { flex: 1 1 auto; min-height: 0; grid-template-rows: auto minmax(0, 1fr) auto auto; }
+body.in-game .lt-board { grid-template-columns: repeat(9, 1fr); gap: clamp(3px, 0.7vw, 7px); }
+body.in-game .lt-num { font-size: clamp(0.75rem, 1.6vw, 1rem); }
+body.in-game .lt-slip { max-height: none; min-height: 0; overflow: auto; gap: 5px; }
+body.in-game .lt-ticket { padding: 4px 10px; }
+body.in-game .lt-nums i { width: 26px; height: 26px; font-size: 0.8rem; }
+@media (max-width: 900px) {
+  body.in-game .lt { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 8px; }
+  body.in-game .lt-left { overflow: visible; }
+  body.in-game .lt-hist, body.in-game .lt-crowd, body.in-game .lt-prizes { display: none; }
+  body.in-game .lt-machine { padding: 8px; gap: 6px; }
+  body.in-game .lt-jackpot { padding: 2px 16px; }
+  body.in-game .lt-jackpot span { display: none; }
+  body.in-game .lt-jackpot-amt { font-size: 1.7rem; }
+  body.in-game .lt-ball { width: 38px; height: 38px; font-size: 1.05rem; }
+  body.in-game .lt-status { min-height: 0; }
+  body.in-game .lt-status b { font-size: 1rem; }
+  body.in-game .lt-actions .btn { padding: 0.5em 0.8em; font-size: 0.78rem; }
+}

@@ -175,8 +175,20 @@ export default {
     }
 
     function paintBalls() {
+      // update in place so a ball that is already showing never restarts its animation
       const d = view.drawn;
-      balls.replaceChildren(...range(5).map((i) => (d && i < revealed ? h('span', { class: 'lt-ball pop' }, String(d[i])) : h('span', { class: 'lt-ball empty' }, '?'))));
+      [...balls.children].forEach((el, i) => {
+        const want = d && i < revealed ? String(d[i]) : null;
+        if (want) {
+          if (el.textContent !== want || !el.classList.contains('pop')) {
+            el.textContent = want;
+            el.className = 'lt-ball pop';
+          }
+        } else if (!el.classList.contains('rolling')) {
+          el.textContent = '?';
+          el.className = 'lt-ball empty';
+        }
+      });
     }
 
     function timerPaint() {
@@ -194,9 +206,18 @@ export default {
       revealed = 0;
       status.className = 'lt-status';
       status.textContent = 'Balls rolling...';
-      const gap = reduceMotion() ? 150 : Math.max(250, (ms * 0.85) / 5);
+      paintBalls();
+      // each ball tumbles through random numbers, then locks onto the drawn one; the last ball gets the most suspense
+      const slot = reduceMotion() ? 200 : Math.max(450, (ms * 0.9) / 5);
       for (let i = 0; i < 5 && alive; i++) {
-        await sleep(i === 0 ? Math.min(600, gap) : gap);
+        const el = balls.children[i];
+        const spin = setInterval(() => {
+          el.className = 'lt-ball rolling';
+          el.textContent = String(1 + Math.floor(Math.random() * 36));
+        }, 70);
+        await sleep(slot * (i === 4 ? 1.15 : 1));
+        clearInterval(spin);
+        el.classList.remove('rolling');
         revealed = i + 1;
         sfx.tick();
         paintBalls();

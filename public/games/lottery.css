@@ -49,3 +49,6 @@
 .lt-x { border: 0; background: transparent; font-size: 1.4rem; line-height: 1; cursor: pointer; color: #a8142a; padding: 0 6px; }
 .lt-prize { font-weight: 700; min-width: 5ch; text-align: right; }
 .lt-total { font-weight: 700; color: var(--gold-l); min-height: 1.2em; }
+
+.lt-ball.rolling { background: radial-gradient(circle at 35% 30%, #fff, #ffe9a0 55%, #d89a1c); animation: ltShake 0.14s linear infinite; filter: blur(0.6px); }
+@keyframes ltShake { 50% { transform: translateY(-4px) rotate(8deg); } }

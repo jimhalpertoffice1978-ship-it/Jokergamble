@@ -24,6 +24,7 @@ Open the site, sign in with the host ID, create players on the Host console, and
 
 - **Blackjack:** 6 decks, 3:2 blackjack, dealer stands on all 17, double, split (up to 4 hands), up to 7 seats. 20s betting window that starts at the first bet (or everyone taps Deal now), 20s per turn (idle or disconnected players auto-stand quickly).
 - **Roulette:** European single zero, 97.3% return, inside and outside bets. 25s betting window that starts at the first chip (or everyone taps Spin now), then one shared spin.
+- **Lucky Draw (lottery):** pick 5 numbers from 1-36 at 20 tokens a ticket (max 10 per draw). The first ticket starts a 45s sales window, then one shared draw. Match 2 = 40, 3 = 400, 4 = 10,000, 5 = the rolling jackpot (starts at 50,000, grows 5 tokens per ticket, split if several win).
 - Each engine is server-authoritative; the browser only draws what it is told.
 
 ## Host console (`#/admin`, after signing in as host)
@@ -35,6 +36,8 @@ Create players (with a generated password), edit tokens, reset passwords, rename
 1. `src/games/<id>.js` exports `createXxx(opts)` returning a table engine: `id, name, tagline, accent, minBet, maxBet, rules[]`, `init()`, `tick(state, now, ctx)`, `act(state, playerId, action, now, ctx)`, `view(state, playerId, now, ctx)`, `summary(state)`, `staked(state, playerId)`, `reset(state, ctx)`. State must be plain JSON, and `state.deadline` (epoch ms or null) is the single timer, so the room can shift it after a restart. `ctx` offers `rng, online, name, balance, debit, credit, settle`.
 2. `public/games/<id>.js` (+ `.css`, `.svg`) exports `default { mount(root, { act, onRoom, meta }) }` and returns a cleanup function. `onRoom(fn)` delivers a fresh snapshot whenever the table changes.
 3. Add it to `src/games/index.js`.
+
+Worked example: Lucky Draw is exactly this - `src/games/lottery.js`, `public/games/lottery.js|css|svg`, plus one import and one array entry in `src/games/index.js`. The lobby tile, live player count, countdown, host table-reset and restart-resume all work automatically; nothing else needs touching. Add a test next to `test/sim.test.js` that drives the engine through `rooms.act` and `rooms.tick` with a fake clock.
 
 ## Deploy on Render
 

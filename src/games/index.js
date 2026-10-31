@@ -18,5 +18,6 @@
 //   3. Add it to the list below.
 import { createBlackjack } from './blackjack.js';
 import { createRoulette } from './roulette.js';
+import { createLottery } from './lottery.js';
 
-export const defaultGames = (opts = {}) => [createBlackjack(opts.blackjack), createRoulette(opts.roulette)];
+export const defaultGames = (opts = {}) => [createBlackjack(opts.blackjack), createRoulette(opts.roulette), createLottery(opts.lottery)];
