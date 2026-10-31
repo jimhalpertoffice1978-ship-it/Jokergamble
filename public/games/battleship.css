@@ -1,0 +1,58 @@
+/* Battleship */
+.bs { --cs: 40px; display: grid; gap: 8px; align-content: start; }
+.bs-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; padding: 0 4px; }
+.bs-status { display: grid; }
+.bs-status b { font-family: var(--font-sign); font-weight: 400; font-size: 1.5rem; color: var(--ivory); }
+.bs-status span { font-weight: 700; opacity: 0.9; }
+.bs-status.go b { color: var(--gold-l); text-shadow: 0 0 18px var(--gold); }
+.bs-status.win b { color: var(--gold-l); text-shadow: 0 0 24px var(--gold); }
+.bs-timer { font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--gold-l); }
+.bs-timer.urgent { color: #ffb3ba; animation: flicker 0.5s ease-in-out infinite alternate; }
+.bs-boards { display: flex; gap: 22px; justify-content: center; align-items: flex-start; }
+.bs-board { display: grid; gap: 6px; justify-items: center; }
+.bs-title { display: flex; gap: 10px; align-items: baseline; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-l); padding: 2px 10px; border-radius: 99px; }
+.bs-title b { font-weight: 700; }
+.bs-title span { opacity: 0.7; }
+.bs-title.turn { background: rgba(246, 199, 68, 0.2); box-shadow: 0 0 14px rgba(246, 199, 68, 0.4); }
+.bs-grid { display: grid; grid-template-columns: repeat(10, var(--cs)); grid-auto-rows: var(--cs); gap: 2px; padding: 8px; border-radius: 18px; background: linear-gradient(160deg, #0d3c6e, #07223f); box-shadow: 0 0 0 3px #d9b55a, 0 14px 30px rgba(0, 0, 0, 0.5); }
+.bs-c { position: relative; border: 0; padding: 0; border-radius: 4px; background: rgba(120, 190, 255, 0.16); cursor: default; transition: background 0.15s; }
+.bs-c:disabled { opacity: 1; cursor: default; }
+.bs-c.ship { background: linear-gradient(#aab6c6, #6d7a8d); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+.bs-c.sunk { background: linear-gradient(#7a2330, #4b0f19); }
+.bs-c.miss::after { content: ''; position: absolute; inset: 34%; border-radius: 50%; background: rgba(255, 255, 255, 0.75); }
+.bs-c.hit::after { content: ''; position: absolute; inset: 20%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe27a, #ff5a1f 55%, #a5121f); box-shadow: 0 0 10px #ff7a1a; animation: popIn 0.35s cubic-bezier(0.2, 1.5, 0.4, 1) both; }
+.bs-c.last { outline: 3px solid #fff6cf; outline-offset: -2px; }
+.bs-c.pv { background: rgba(61, 255, 138, 0.55); }
+.bs-c.pvbad { background: rgba(255, 77, 94, 0.55); }
+.bs-grid .bs-c:not(:disabled) { cursor: pointer; }
+.bs-grid.aim .bs-c:not(:disabled):hover { background: rgba(246, 199, 68, 0.6); }
+.bs-grid.aim { box-shadow: 0 0 0 3px var(--gold), 0 0 30px rgba(246, 199, 68, 0.5); }
+.bs-ships { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.bs-ship { display: grid; justify-items: center; gap: 4px; padding: 6px 12px; border-radius: 12px; border: 2px solid rgba(255, 233, 160, 0.25); background: rgba(0, 0, 0, 0.3); color: var(--ivory); cursor: pointer; font-size: 0.78rem; }
+.bs-ship span { display: flex; gap: 2px; }
+.bs-ship i { width: 12px; height: 12px; border-radius: 3px; background: #9aa6b8; }
+.bs-ship.sel { border-color: var(--gold); box-shadow: 0 0 14px rgba(246, 199, 68, 0.6); }
+.bs-ship.done { opacity: 0.5; }
+.bs-controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; }
+.bs-note { opacity: 0.85; font-weight: 700; }
+.bs-side { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; font-size: 0.85rem; opacity: 0.85; }
+.bs-q b { display: block; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-l); }
+.bs-tabs { display: none; justify-content: center; gap: 8px; }
+.bs-tabs .btn.on { background: var(--gold); color: var(--ink); }
+
+/* fit to the screen */
+body.in-game .bs { --cs: clamp(22px, min(calc((100vw - 120px) / 21.5), calc((var(--room) - 190px) / 10.6), 46px), 46px); height: 100%; grid-template-rows: auto auto auto auto auto; align-content: start; }
+body.in-game .bs-status b { font-size: 1.25rem; }
+body.in-game .bs-side { display: none; }
+@media (max-width: 760px) {
+  body.in-game .bs { --cs: clamp(22px, min(calc((100vw - 56px) / 10.4), calc((var(--room) - 270px) / 10.6)), 42px); }
+  .bs-ship { padding: 4px 8px; font-size: 0.7rem; gap: 0; }
+  .bs-ship i { display: none; }
+  .bs-ships { gap: 5px; }
+  body.in-game .bs-status b { font-size: 1.05rem; }
+  body.in-game .bs { gap: 6px; }
+  .bs-tabs { display: flex; }
+  .bs-tabs[hidden] { display: none; }
+  .bs-boards[data-tab="mine"] .bs-board:last-child { display: none; }
+  .bs-boards[data-tab="enemy"] .bs-board:first-child { display: none; }
+}

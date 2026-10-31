@@ -25,6 +25,7 @@ Open the site, sign in with the host ID, create players on the Host console, and
 - **Blackjack:** 6 decks, 3:2 blackjack, dealer stands on all 17, double, split (up to 4 hands), up to 7 seats. 20s betting window that starts at the first bet (or everyone taps Deal now), 20s per turn (idle or disconnected players auto-stand quickly).
 - **Roulette:** European single zero, 97.3% return, inside and outside bets. 25s betting window that starts at the first chip (or everyone taps Spin now), then one shared spin.
 - **Lucky Draw (lottery):** pick 5 numbers from 1-36 at 20 tokens a ticket (max 10 per draw). The first ticket starts a 45s sales window, then one shared draw. Match 2 = 40, 3 = 400, 4 = 10,000, 5 = the rolling jackpot (starts at 50,000, grows 5 tokens per ticket, split if several win).
+- **Battleship (1 v 1):** one table with two seats; everyone else spectates or joins the queue. Each player stakes 100 tokens, places a 5-ship fleet (60s, auto-placed if time runs out, or hit Random), then players alternate shots (20s per turn; an idle turn fires a random shot for you, so the table never stalls). Sinking the whole enemy fleet wins the 200 pot; Resign concedes it. A seat nobody joins is refunded after 2 minutes. The next match is seated automatically from the queue.
 - Each engine is server-authoritative; the browser only draws what it is told.
 
 ## Host console (`#/admin`, after signing in as host)

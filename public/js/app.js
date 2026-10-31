@@ -334,6 +334,9 @@ const PHASE = {
   spinning: 'Wheel spinning',
   selling: 'Tickets on sale',
   drawing: 'Drawing now',
+  waiting: 'Waiting for players',
+  placing: 'Placing fleets',
+  battle: 'Battle in progress',
   result: 'Paying out',
 };
 
